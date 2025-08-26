@@ -6,10 +6,17 @@ const InitialLayout = () => {
   const isWeb = Platform.OS === "web";
   return (
     <Stack>
-      <Stack.Screen name="register" options={{ headerShown: false }} />
       <Stack.Screen
         name="index"
-        options={{ headerShown: isWeb, headerBackTitle: "" }}
+        options={{
+          headerShown: isWeb ? false : true,
+          headerBackTitle: "",
+          title: "Login",
+        }}
+      />
+      <Stack.Screen
+        name="register"
+        options={{ headerShown: true, title: "Register" }}
       />
     </Stack>
   );
