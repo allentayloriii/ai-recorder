@@ -1,9 +1,12 @@
+import { useSignUp } from "@clerk/clerk-expo";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
+  Alert,
+  Platform,
   Pressable,
   Text,
   TextInput,
@@ -21,6 +24,7 @@ type FormData = z.infer<typeof schema>;
 
 export default function Index() {
   const [loading, setLoading] = useState(false);
+  const { isLoaded, signUp, setActive } = useSignUp();
   const {
     control,
     handleSubmit,
@@ -35,8 +39,39 @@ export default function Index() {
     mode: "onChange",
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
+  const onSubmit = async ({ email, password, name }: FormData) => {
+    if (!isLoaded) return;
+
+    setLoading(true);
+    try {
+      const signUpAttempt = await signUp.create({
+        emailAddress: email,
+        password,
+        firstName: name,
+      });
+      console.log("signing up");
+      console.log(signUpAttempt);
+      if (signUpAttempt.status === "complete") {
+        await setActive({ session: signUpAttempt.createdSessionId });
+        router.replace("/");
+      } else {
+        console.log(JSON.stringify(signUpAttempt, null, 2));
+        if (Platform.OS === "web") {
+          alert("Sign up not complete. Please try again.");
+        } else {
+          Alert.alert("Error", "Sign up not complete. Please try again.");
+        }
+      }
+    } catch (err) {
+      console.log(JSON.stringify(err, null, 2));
+      if (Platform.OS === "web") {
+        alert("Sign up not complete. Please try again.");
+      } else {
+        Alert.alert("Error", "Sign up not complete. Please try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
