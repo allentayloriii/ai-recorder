@@ -40,14 +40,14 @@ export default function Index() {
     mode: "onChange",
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async ({ email, password }: FormData) => {
     if (!isLoaded) return;
 
     setLoading(true);
     try {
       const signInAttempt = await signIn.create({
-        identifier: data.email,
-        password: data.password,
+        identifier: email,
+        password,
       });
 
       console.log("signInAttempt", signInAttempt);
@@ -65,6 +65,7 @@ export default function Index() {
       if (Platform.OS === "web") {
         alert("Failed to sign in");
       } else {
+        console.log("Error", err);
         Alert.alert("Error", "Failed to sign in");
       }
     } finally {

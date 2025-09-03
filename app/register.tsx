@@ -1,6 +1,6 @@
 import { useSignUp } from "@clerk/clerk-expo";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -10,169 +10,156 @@ import {
   Pressable,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
-import { z } from "zod";
+import * as z from "zod";
 
 const schema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters").max(100),
+  name: z.string().min(1, "Name is required"),
   email: z.email("Invalid email address"),
-  password: z.string().min(1, "Password is required").max(100),
+  password: z.string().min(1, "Password is required"),
 });
-
 type FormData = z.infer<typeof schema>;
 
-export default function Index() {
+export default function RegisterScreen() {
   const [loading, setLoading] = useState(false);
   const { isLoaded, signUp, setActive } = useSignUp();
+
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: "Adonis",
-      email: "adonis@galaxies.dev",
+      email: "adonis@galaxy.dev",
       password: "Test12345",
+      name: "Adonis",
     },
     mode: "onChange",
   });
 
   const onSubmit = async ({ email, password, name }: FormData) => {
     if (!isLoaded) return;
-
     setLoading(true);
+
     try {
       const signUpAttempt = await signUp.create({
         emailAddress: email,
         password,
         firstName: name,
       });
-      console.log("signing up");
-      console.log(signUpAttempt);
+
       if (signUpAttempt.status === "complete") {
         await setActive({ session: signUpAttempt.createdSessionId });
-        router.replace("/");
       } else {
-        console.log(JSON.stringify(signUpAttempt, null, 2));
+        console.error(JSON.stringify(signUpAttempt, null, 2));
         if (Platform.OS === "web") {
-          alert("Sign up not complete. Please try again.");
+          alert("Failed to sign in");
         } else {
-          Alert.alert("Error", "Sign up not complete. Please try again.");
+          Alert.alert("Error", "Failed to sign in");
         }
       }
     } catch (err) {
-      console.log(JSON.stringify(err, null, 2));
+      console.error(JSON.stringify(err, null, 2));
       if (Platform.OS === "web") {
-        alert("Sign up not complete. Please try again.");
+        alert("Failed to sign in");
       } else {
-        Alert.alert("Error", "Sign up not complete. Please try again.");
+        Alert.alert("Error", "Failed to sign in");
       }
-    } finally {
-      setLoading(false);
     }
+
+    setLoading(false);
   };
 
   return (
     <View className="items-center justify-center flex-1 px-4 bg-white">
       {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" />
       ) : (
         <View className="w-full max-w-md">
-          <View>
-            <Text className="mb-2 text-2xl font-bold text-gray-800">
-              Create Your Account
-            </Text>
-          </View>
+          <Text className="mb-8 text-3xl font-bold text-center text-gray-800">
+            Create Account
+          </Text>
 
-          <View className="gap-2 mt-8 space-y-4">
+          <View className="gap-2 space-y-4">
             <View>
+              <Text className="mb-2 text-gray-700">Name</Text>
               <Controller
                 control={control}
                 name="name"
-                render={({ field: { onChange, onBlur, value } }) => (
+                render={({ field: { onChange, value } }) => (
                   <TextInput
-                    placeholder="Name"
+                    className="w-full p-4 border border-gray-300 rounded-lg bg-gray-50"
+                    placeholder="Enter name"
                     value={value}
                     onChangeText={onChange}
-                    onBlur={onBlur}
-                    keyboardType="default"
-                    autoCorrect={false}
-                    autoCapitalize="words"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50"
+                    autoCapitalize="none"
                   />
                 )}
               />
               {errors.name && (
-                <Text className="px-2 mt-1 text-sm text-red-500">
-                  {errors.name.message}
-                </Text>
+                <Text className="text-red-500">{errors.name.message}</Text>
               )}
             </View>
+
             <View>
+              <Text className="mb-2 text-gray-700">Email</Text>
               <Controller
                 control={control}
                 name="email"
-                render={({ field: { onChange, onBlur, value } }) => (
+                render={({ field: { onChange, value } }) => (
                   <TextInput
-                    placeholder="Email"
+                    className="w-full p-4 border border-gray-300 rounded-lg bg-gray-50"
+                    placeholder="Enter email"
                     value={value}
                     onChangeText={onChange}
-                    onBlur={onBlur}
                     keyboardType="email-address"
-                    autoCorrect={false}
                     autoCapitalize="none"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50"
                   />
                 )}
               />
               {errors.email && (
-                <Text className="px-2 mt-1 text-sm text-red-500">
-                  {errors.email.message}
-                </Text>
+                <Text className="text-red-500">{errors.email.message}</Text>
               )}
             </View>
+
             <View>
+              <Text className="mb-2 text-gray-700">Password</Text>
               <Controller
                 control={control}
                 name="password"
-                render={({ field: { onChange, onBlur, value } }) => (
+                render={({ field: { onChange, value } }) => (
                   <TextInput
-                    placeholder="Password"
+                    className="w-full p-4 border border-gray-300 rounded-lg bg-gray-50"
+                    placeholder="Enter password"
                     value={value}
                     onChangeText={onChange}
-                    onBlur={onBlur}
                     secureTextEntry
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50"
                   />
                 )}
               />
               {errors.password && (
-                <Text className="px-2 mt-1 text-sm text-red-500">
-                  {errors.password.message}
-                </Text>
+                <Text className="text-red-500">{errors.password.message}</Text>
               )}
             </View>
+
             <Pressable
+              className="w-full py-4 duration-300 bg-blue-600 rounded-lg hover:bg-blue-700"
               onPress={handleSubmit(onSubmit)}
-              disabled={loading || !isValid}
-              className="mt-6"
             >
-              <Text className="px-4 py-3 text-sm font-semibold text-center text-white bg-blue-500 rounded-lg hover:bg-blue-700">
-                {loading ? "Loading..." : "Sign Up"}
+              <Text className="font-semibold text-center text-white">
+                Register
               </Text>
             </Pressable>
 
             <Link href="/" asChild>
-              <Pressable className="w-full">
-                <Text className="px-4 py-3 text-sm font-semibold text-center text-gray-600 ">
-                  Already have an account?{" "}
-                  <Text className="font-bold text-blue-600">Sign In</Text>
+              <TouchableOpacity className="mt-4">
+                <Text className="text-center text-blue-500">
+                  Already have an account? Login
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
             </Link>
           </View>
         </View>
