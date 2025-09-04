@@ -89,12 +89,13 @@ export default function RegisterScreen() {
               <Controller
                 control={control}
                 name="name"
-                render={({ field: { onChange, value } }) => (
+                render={({ field: { onChange, value, onBlur } }) => (
                   <TextInput
                     className="w-full p-4 border border-gray-300 rounded-lg bg-gray-50"
                     placeholder="Enter name"
                     value={value}
                     onChangeText={onChange}
+                    onBlur={onBlur}
                     autoCapitalize="none"
                   />
                 )}
@@ -109,12 +110,13 @@ export default function RegisterScreen() {
               <Controller
                 control={control}
                 name="email"
-                render={({ field: { onChange, value } }) => (
+                render={({ field: { onChange, value, onBlur } }) => (
                   <TextInput
                     className="w-full p-4 border border-gray-300 rounded-lg bg-gray-50"
                     placeholder="Enter email"
                     value={value}
                     onChangeText={onChange}
+                    onBlur={onBlur}
                     keyboardType="email-address"
                     autoCapitalize="none"
                   />
