@@ -1,44 +1,45 @@
 {
   "expo": {
-    "name": "ai-recorder",
-    "slug": "ai-recorder",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "airecorder",
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.soundtrksamurai.ai-recorder"
-    },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "foregroundImage": "./assets/images/adaptive-icon.png"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.soundtrksamurai.airecorder"
     },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+    "experiments": {
+      "typedRoutes": true
     },
+    "icon": "./assets/images/icon.png",
+    "ios": {
+      "bundleIdentifier": "com.soundtrksamurai.ai-recorder",
+      "supportsTablet": true
+    },
+    "name": "ai-recorder",
+    "newArchEnabled": true,
+    "orientation": "portrait",
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
+          "backgroundColor": "#ffffff",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "resizeMode": "contain"
         }
-      ]
+      ],
+      "expo-sqlite"
     ],
-    "experiments": {
-      "typedRoutes": true
+    "scheme": "airecorder",
+    "slug": "ai-recorder",
+    "userInterfaceStyle": "automatic",
+    "version": "1.0.0",
+    "web": {
+      "bundler": "metro",
+      "favicon": "./assets/images/favicon.png",
+      "output": "static"
     }
   }
 }
