@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { AudioModule, RecordingPresets, useAudioRecorder } from "expo-audio";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Alert, TouchableOpacity, View } from "react-native";
 
 const Home = () => {
   const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
@@ -18,6 +18,12 @@ const Home = () => {
 
       if (permissions.status === "granted") {
         console.log("startRecording ~ permissions granted");
+      } else {
+        console.log("startRecording ~ permissions not granted");
+        Alert.alert(
+          "Permission required",
+          "Please grant audio recording permissions to use this feature."
+        );
       }
 
       await AudioModule.setAudioModeAsync({

@@ -34,8 +34,8 @@ export default function Index() {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "adonis@galaxy.dev",
+      password: "Test12345",
     },
     mode: "onChange",
   });
