@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Alert, TouchableOpacity, View } from "react-native";
 
-const Home = () => {
+const home = () => {
   const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
   const [isRecording, setIsRecording] = useState(false);
   const router = useRouter();
@@ -41,6 +41,7 @@ const Home = () => {
 
   const stopRecording = async () => {
     if (!audioRecorder.isRecording) return;
+
     setIsRecording(false);
 
     await audioRecorder.stop();
@@ -70,4 +71,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default home;
