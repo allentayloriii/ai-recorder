@@ -8,6 +8,13 @@
       "when": 1756954562759,
       "tag": "0000_slippery_roland_deschain",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1758945897516,
+      "tag": "0001_chilly_wallow",
+      "breakpoints": true
     }
   ]
 }

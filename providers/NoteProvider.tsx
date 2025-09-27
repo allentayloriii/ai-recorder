@@ -2,7 +2,7 @@ import { type NewNote, type Note } from "@/db/schema";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   createContext,
-  ReactNode,
+  PropsWithChildren,
   useContext,
   useEffect,
   useState,
@@ -19,7 +19,7 @@ const NoteContext = createContext<NoteContextType | null>(null);
 
 const STORAGE_KEY = "notes";
 
-export function NoteProvider({ children }: { children: ReactNode }) {
+export function NoteProvider({ children }: PropsWithChildren) {
   const [notes, setNotes] = useState<Note[]>([]);
 
   useEffect(() => {
