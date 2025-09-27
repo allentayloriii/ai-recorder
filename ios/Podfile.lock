@@ -278,7 +278,7 @@ PODS:
     - ExpoModulesCore
   - ExpoCrypto (14.1.5):
     - ExpoModulesCore
-  - ExpoFileSystem (18.1.11):
+  - ExpoFileSystem (19.0.15):
     - ExpoModulesCore
   - ExpoFont (13.3.2):
     - ExpoModulesCore
@@ -326,7 +326,7 @@ PODS:
     - ExpoModulesCore
   - ExpoSplashScreen (0.30.10):
     - ExpoModulesCore
-  - ExpoSQLite (16.0.7):
+  - ExpoSQLite (16.0.8):
     - ExpoModulesCore
   - ExpoSymbols (0.4.5):
     - ExpoModulesCore
@@ -2688,7 +2688,7 @@ SPEC CHECKSUMS:
   ExpoAudio: 052e187744415b4e04fc5c9bec08a51058983122
   ExpoBlur: 846780b2c90f59e964b9a50385d4deb67174ebfb
   ExpoCrypto: fcb6a8a08d1929f346cb95eb05a8f7818627177a
-  ExpoFileSystem: 9681caebda23fa1b38a12a9c68b2bade7072ce20
+  ExpoFileSystem: 72fef9c5cb92b9995eeee114a14acb66d94d5bd4
   ExpoFont: 091a47eeaa1b30b0b760aa1d0a2e7814e8bf6fe6
   ExpoHaptics: 68c215e070f660e0a29c45dcda4f60eeff08aefb
   ExpoHead: 76d17284733254926d2e7127c1aef938f18188d1
@@ -2698,7 +2698,7 @@ SPEC CHECKSUMS:
   ExpoModulesCore: 16f74d8df26d7e4b6bf7eb3d0effaf0f15df7b80
   ExpoSecureStore: 3148869ad24ab94f9e0c5777c7941d7a37d60399
   ExpoSplashScreen: 6f9213be0c60f2756a2f8220c36f4b90c55e3dbd
-  ExpoSQLite: 8199fa6d2ac75131781b5a9fba23f7617862feb9
+  ExpoSQLite: f9d1202877e12bfa78a58309a3977ee4ea0b1314
   ExpoSymbols: bd4e20b0b6a9dbacc31dd7c861e0d6d01b56e1f2
   ExpoSystemUI: 46c8903a9c8d78232ebd7b82c4d14175700231e5
   ExpoWebBrowser: eeb47f52e85b2686b56178749675cf90d0822f86
