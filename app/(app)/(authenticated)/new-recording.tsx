@@ -2,7 +2,13 @@ import { NewNote } from "@/db/schema";
 import { useNotes } from "@/providers/NoteProvider";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Platform,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const NewRecording = () => {
   const { uri } = useLocalSearchParams<{ uri: string }>();
@@ -14,11 +20,67 @@ const NewRecording = () => {
   const router = useRouter();
   const { saveNote } = useNotes();
 
+  async function uploadRecording(fileUri: string) {
+    const uploadUrl = "http://localhost:8081/api/speech-to-text";
+
+    const form = new FormData();
+    form.append("file", {
+      uri: fileUri,
+      name: "recording.m4a",
+      type: "audio/m4a",
+    } as any); // cast to any for TypeScript
+
+    // IMPORTANT: do NOT set Content-Type; RN/fetch will set the multipart boundary
+    const resp = await fetch(uploadUrl, {
+      method: "POST",
+      body: form,
+    });
+
+    if (!resp.ok) {
+      const errText = await resp.text();
+      throw new Error(`Upload failed: ${resp.status} ${errText}`);
+    }
+    return await resp.json();
+  }
+
   useEffect(() => {
+    const handleTranscript = async () => {
+      if (!uri) return;
+      setIsLoading(true);
+      try {
+        if (Platform.OS === "web") {
+          const response = await fetch(uri);
+          const blob = await response.blob();
+
+          const formData = new FormData();
+          formData.append("file", blob, "recording.m4a");
+
+          const apiResponse = await fetch(
+            "https://localhost:8081/api/speech-to-text+api",
+            {
+              method: "POST",
+              body: formData,
+            }
+          ).then((res) => res.json());
+          
+          console.log(apiResponse);
+          setTranscription(apiResponse.text || "No transcription available");
+        } else {
+          const uploadResult = await uploadRecording(uri);
+          console.log(uploadResult);
+          const transcription = JSON.parse(uploadResult.body).text;
+          setTranscription(transcription || "No transcription available");
+        }
+      } catch (e) {
+        console.error("Error uploading recording:", e);
+        setTranscription("Error during transcription");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     handleTranscript();
   }, [uri]);
-
-  const handleTranscript = async () => {};
 
   const handleSave = async () => {
     const note: NewNote = {

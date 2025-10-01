@@ -18,13 +18,11 @@ export async function POST(request: Request) {
       model: "whisper-1",
     });
 
-    return new Response(JSON.stringify({ text: response.text }), {
-      status: 200,
-    });
+    return Response.json({ text: response.text });
   } catch (error) {
     console.error("Error during transcription:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to transcribe audio" }),
+    return Response.json(
+      { error: "Failed to transcribe audio" },
       { status: 500 }
     );
   }
